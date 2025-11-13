@@ -15,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="tr">
       <body>
-        <Providers>{children}</Providers>
+        <div className="flex items-center justify-center">
+          <Providers>{children}</Providers>
+        </div>
       </body>
     </html>
   );
