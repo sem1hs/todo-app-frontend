@@ -1,10 +1,20 @@
-"use client";
-import { useTodos } from "@/hooks/useTodos";
+import Todos from "@/components/todo/Todos";
+import { getUsername } from "@/lib/user/user";
+import { Suspense } from "react";
 
-const Page = () => {
-  const { todos, isLoading } = useTodos();
-  console.log(todos.map((todo) => todo.createdBy));
-  return <div>Hello From Todo</div>;
+const Page = async () => {
+  const user = await getUsername();
+
+  return (
+    <div>
+      <h1 className="text-2xl text-white">
+        Hello {user?.username} From Todo App !
+      </h1>
+      <Suspense fallback={<p>Yükleniyor...</p>}>
+        <Todos />
+      </Suspense>
+    </div>
+  );
 };
 
 export default Page;

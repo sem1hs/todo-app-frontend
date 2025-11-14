@@ -1,13 +1,13 @@
-import { getAllTodos } from "@/api/todo/todos";
-import { Todo } from "@/types/todo";
+import { getAllTodos } from "@/api/todo/todo";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useTodos = () => {
   const queryClient = useQueryClient();
 
-  const todosQuery = useQuery<Todo[], Error>({
+  const todosQuery = useQuery({
     queryKey: ["todos"],
     queryFn: getAllTodos,
+    staleTime: 1000 * 60 * 10,
   });
 
   return {

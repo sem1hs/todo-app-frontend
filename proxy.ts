@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { isTokenExpired } from "./utils/isTokenValid";
 
 const protectedRoutes = ["/home"];
 
@@ -8,6 +9,11 @@ export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (protectedRoutes.some((route) => pathname.startsWith(route)) && !token) {
+    const loginUrl = new URL("/", request.url);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  if (token && isTokenExpired(token)) {
     const loginUrl = new URL("/", request.url);
     return NextResponse.redirect(loginUrl);
   }
