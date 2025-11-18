@@ -6,8 +6,8 @@ const Page = async () => {
   const user = await getUsername();
 
   return (
-    <div>
-      <h1 className="text-2xl text-white">
+    <div className="flex flex-col gap-6 w-full">
+      <h1 className="text-2xl text-white text-center">
         Hello {user?.username} From Todo App !
       </h1>
       <Suspense fallback={<p>Yükleniyor...</p>}>

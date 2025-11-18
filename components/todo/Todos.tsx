@@ -5,14 +5,16 @@ import TodoList from "./TodoList";
 import { useTodos } from "@/hooks/useTodos";
 
 const Todos = () => {
-  const { todos } = useTodos();
+  const { todos, isLoading } = useTodos();
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div>
+    <>
       <Suspense fallback={<p>Yükleniyor...</p>}>
         <TodoList todos={todos} />
       </Suspense>
-    </div>
+    </>
   );
 };
 
