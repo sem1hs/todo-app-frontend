@@ -2,21 +2,34 @@
 
 import { useTodos } from "@/hooks/useTodos";
 import { todoInitialValues, todoSchema } from "@/schemas/todoSchema";
-import { TodoRequest } from "@/types/todo";
+import { TodoRequest, TodoResponse } from "@/types/todo";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 
-const TodoForm = () => {
-  const { createTodo, isCreating } = useTodos();
+type Props = {
+  todoToEdit?: TodoResponse;
+  onClose?: () => void;
+};
+
+const TodoForm = ({ todoToEdit, onClose }: Props) => {
+  const { createTodo, updateTodo, isCreating, isUpdating } = useTodos();
 
   const handleSubmit = (
     values: TodoRequest,
     { resetForm }: FormikHelpers<TodoRequest>
-  ) => createTodo(values, resetForm);
+  ) => {
+    if (todoToEdit) {
+      updateTodo({ id: todoToEdit.id, todo: values });
+      onClose?.();
+    } else {
+      createTodo({ todo: values, resetForm });
+    }
+  };
 
   return (
     <li className="rounded-xl overflow-hidden bg-[#333] flex flex-col">
       <Formik
         initialValues={todoInitialValues}
+        enableReinitialize
         validationSchema={todoSchema}
         onSubmit={handleSubmit}
       >
@@ -40,7 +53,13 @@ const TodoForm = () => {
               type="submit"
               className="cursor-pointer mt-auto bg-[#222] rounded-xl py-2 px-3"
             >
-              {isCreating ? "Kaydediliyor..." : "Kaydet"}
+              {todoToEdit
+                ? isUpdating
+                  ? "Güncelleniyor..."
+                  : "Güncelle"
+                : isCreating
+                ? "Kaydediliyor..."
+                : "Kaydet"}
             </button>
           </div>
         </Form>
