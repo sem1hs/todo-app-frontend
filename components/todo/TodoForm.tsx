@@ -28,7 +28,7 @@ const TodoForm = ({ todoToEdit, onClose }: Props) => {
   return (
     <li className="rounded-xl overflow-hidden bg-[#333] flex flex-col">
       <Formik
-        initialValues={todoInitialValues}
+        initialValues={!todoToEdit && todoInitialValues}
         enableReinitialize
         validationSchema={todoSchema}
         onSubmit={handleSubmit}
